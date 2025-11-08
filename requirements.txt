@@ -1,0 +1,14 @@
+langchain>=0.2.16
+langchain-experimental>=0.0.64
+langchain-ollama
+langchain-openai
+langchain-google-genai
+langchain-community
+
+openai
+google-generativeai
+
+pandas
+chromadb
+pypdf
+streamlit
