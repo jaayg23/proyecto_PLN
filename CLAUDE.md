@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Streamlit-based Multi-Agent RAG (Retrieval-Augmented Generation) application that allows users to view PDF notebooks and chat with their content using AI. The app features:
+This is a **modular, production-ready** Streamlit-based Multi-Agent RAG (Retrieval-Augmented Generation) application that allows users to view PDF notebooks and chat with their content using AI.
+
+### Key Features
 - **Tab 1 - PDF Viewer**: View and browse through your PDF notebooks
 - **Tab 2 - Multi-Agent Chat**: Ask questions about any notebook, and an intelligent agent will automatically choose the most relevant notebook(s) to answer from
 
@@ -22,11 +24,41 @@ streamlit run app.py
 pip install -r requirements.txt
 ```
 
-## Architecture
+## Architecture Overview
 
-### Core Components
+**Version 2.0** introduces a **modular, layered architecture** with clean separation of concerns:
 
-The application is structured as a single-file Streamlit app (`app.py`) with the following key architectural components:
+```
+proyecto_PLN/
+├── app.py                          # Main entry point (minimal, ~50 lines)
+├── src/
+│   ├── config/                     # Configuration layer
+│   │   ├── settings.py            # Application settings
+│   │   └── notebooks.py           # Document database
+│   ├── services/                   # Business logic layer
+│   │   ├── llm_service.py         # LLM management
+│   │   ├── document_service.py    # PDF processing
+│   │   ├── vector_store.py        # ChromaDB operations
+│   │   └── agent_service.py       # Multi-agent RAG
+│   ├── ui/                         # Presentation layer
+│   │   ├── styles.py              # CSS styling
+│   │   ├── components.py          # Reusable components
+│   │   └── pages.py               # Tab content
+│   └── utils/                      # Utility layer
+│       └── helpers.py             # Session state
+├── app_old.py                      # Backup of monolithic version
+└── requirements.txt
+```
+
+### Architecture Principles
+
+1. **Separation of Concerns**: Each layer has a single responsibility
+2. **Modularity**: Components can be developed, tested, and modified independently
+3. **Type Safety**: Uses dataclasses for configuration (e.g., `NotebookConfig`)
+4. **Maintainability**: Clear structure makes it easy to locate and modify code
+5. **Scalability**: Easy to add new features, models, or documents
+
+## Core Components
 
 1. **Multi-Agent RAG System**: The app implements an intelligent multi-document RAG workflow:
    - PDF loading via `PyPDFLoader`
@@ -73,19 +105,47 @@ The app will function with only one API key, but both LLM options require their 
 
 ### Adding New Notebooks
 
-Edit the `CUADERNOS` dictionary in `app.py`:
+**New in v2.0**: Edit `src/config/notebooks.py`:
 
 ```python
-CUADERNOS = {
-    "Notebook Title": {
-        "gdrive_id": "google_drive_file_id",  # For PDF preview (optional)
-        "local_path": "path_to_local_pdf.pdf"  # Required for RAG
-    }
-}
+from src.config.notebooks import NotebookConfig
+
+NOTEBOOKS["Notebook Title"] = NotebookConfig(
+    name="Notebook Title",
+    gdrive_id="google_drive_file_id",  # For PDF preview (optional)
+    local_path="path_to_local_pdf.pdf",  # Required for RAG
+    description="Use this tool to search for information about...",  # For agent routing
+    category="subject_area"  # For organization
+)
 ```
 
+**Key fields**:
+- `name`: Display name of the notebook
 - `gdrive_id`: Used for Google Drive PDF preview iframe (can be None)
 - `local_path`: Path to local PDF file (required for RAG functionality)
+- `description`: Detailed description used by the agent to decide when to use this notebook
+- `category`: Category for organization (e.g., "mathematics", "computer_science", "regulations")
+
+### Customizing Application Settings
+
+Edit `src/config/settings.py`:
+
+```python
+class Settings:
+    # LLM Model Configuration
+    GOOGLE_MODEL_NAME = "gemini-2.5-flash"
+    OPENAI_MODEL_NAME = "gpt-4o-mini"
+    LLM_TEMPERATURE = 0.1
+
+    # Document Processing Configuration
+    CHUNK_SIZE = 1000
+    CHUNK_OVERLAP = 150
+    RETRIEVER_K = 4
+
+    # Agent Configuration
+    AGENT_MAX_ITERATIONS = 3
+    AGENT_VERBOSE = True
+```
 
 ## Important Technical Details
 
@@ -106,4 +166,57 @@ The agent uses descriptive tool metadata to decide which notebook to query. Each
 
 ### Chat Persistence
 
-Unlike the previous version, the chat history in Tab 2 is **persistent** and doesn't clear when switching between notebooks in Tab 1. This allows users to have a continuous conversation about multiple notebooks.
+The chat history in Tab 2 is **persistent** and doesn't clear when switching between notebooks in Tab 1. This allows users to have a continuous conversation about multiple notebooks.
+
+## Development Guidelines
+
+### Adding New Features
+
+1. **New LLM Provider**: Extend `LLMService` in `src/services/llm_service.py`
+2. **New UI Component**: Add to `UIComponents` in `src/ui/components.py`
+3. **New Configuration**: Add to `Settings` in `src/config/settings.py`
+4. **New Service**: Create new file in `src/services/` and follow existing patterns
+
+### Code Organization Best Practices
+
+1. **Configuration Layer** (`src/config/`):
+   - All constants and settings
+   - No business logic or UI code
+   - Use dataclasses for type safety
+
+2. **Service Layer** (`src/services/`):
+   - Business logic only
+   - No direct UI interactions (use Streamlit caching, not display functions)
+   - Return data or objects, let UI layer handle display
+
+3. **UI Layer** (`src/ui/`):
+   - Presentation logic only
+   - Call service layer for data
+   - Reusable components in `components.py`
+   - Page-specific logic in `pages.py`
+
+4. **Main Entry Point** (`app.py`):
+   - Keep minimal (orchestration only)
+   - Just configure and render pages
+   - No business logic
+
+### Testing Strategy
+
+The modular architecture makes testing easier:
+
+- **Unit tests**: Test individual services independently
+- **Integration tests**: Test service interactions
+- **UI tests**: Test component rendering (can mock services)
+
+### Migration from v1.0
+
+The old monolithic `app.py` (393 lines) has been refactored into:
+- `app.py`: 50 lines (entry point)
+- `src/config/`: 100 lines (configuration)
+- `src/services/`: 300 lines (business logic)
+- `src/ui/`: 200 lines (presentation)
+- `src/utils/`: 50 lines (utilities)
+
+**Total**: ~700 lines (well-organized and modular vs. 393 lines monolithic)
+
+The old version is backed up as `app_old.py` for reference.

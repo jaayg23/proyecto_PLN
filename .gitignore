@@ -1,1 +1,19 @@
 .streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Temporary files
+nul
+*.tmp
+
+# ChromaDB
+chroma_db/
+*.chroma
+
+# IDE
+.vscode/
+.idea/
