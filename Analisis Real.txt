@@ -1,0 +1,864 @@
+[Inicio del archivo]
+
+NOTEBOOK
+
+Espacios métricos. Sea M≠0. Una métrica en M es una aplicación d:MxM tal que satisface:
+
+1) d(x,y) ≥ 0 ∀ x,y ∈ M
+2) d(x,y) = 0 ⇔ x = y
+3) d(x,y) = d(y,x) ∀ x,y ∈ M
+4) d(x,y) < d(x,z) + d(z,y), ∀ x,y,z ∈ M
+
+Un espacio métrico es una dupla (M,d) formada por un conjunto no vacío M y una métrica d en M.
+
+Espacios normados: Sea E un espacio vectorial sobre IR. Una norma en E es una aplicación || || : E → IR que satisface lo siguiente:
+
+N1) ||x|| > 0 ∀ x ∈ E
+N2) ||x|| = 0 ⇔ x = 0 (el vector cero del espacio)
+N3) ||λx|| = |λ|·||x|| ∀ λ ∈ IR, ∀ x ∈ E
+N4) ||x+y|| ≤ ||x|| + ||y|| ∀ x,y ∈ E
+
+Proposición: Toda norma en un espacio normado (E, ||||) define una métrica en E
+
+d//: Si || || es una norma en E, definimos d:ExE→IR  
+(x,y) ↦ ||x-y||
+
+d es la métrica indicada por la norma.
+
+d) d(x,y) ≥ 0, ∀ x, y ∈ E
+
+2) d(x,y) = ||x-y|| = ||y-x|| = d(y,x)
+
+N0 ⊥ a:
+
+||x|| = ||-(-x)|| = ||1·(-x)|| = |-1|·||-x|| = 1·||-x|| = ||-x||
+
+3) d(x,y) = 0  
+⇔ ||x-y|| = 0  
+⇔ x-y = 0  
+⇔ x = y
+
+4) d(x,y) = ||x-y|| = ||(x-z) + (z-y)|| ≤ ||x-z|| + ||z-y||
+
+---
+
+Espacios con producto interno: Sea E un espacio vectorial sobre ℝ
+
+Un producto interno en E, es una aplicación
+
+⟨,⟩: E × E → ℝ que satisface:
+
+1) x ≠ 0 → ⟨x, x⟩ > 0
+
+2) ⟨x+y,z⟩ = ⟨x,z⟩ + ⟨y,z⟩  
+∀ x, y, z ∈ E
+
+3) ⟨λx, y⟩ = λ⟨x,y⟩  
+∀ λ ∈ ℝ
+
+4) ⟨x,y⟩ = ⟨y,x⟩  
+∀ x,y ∈ E
+
+Un espacio vectorial con producto interno, es una  
+dupla (E, ⟨,⟩) formado por E espacio vectorial y ⟨,⟩  
+un producto interno en E.
+
+Proposición: Todo producto interno en un espacio vectorial,  
+induce una norma en dicho espacio  
+
+dll: Sea (E, ⟨,⟩) espacio con producto interno  
+
+Definimos || ||: E → IR como  
+
+||x|| = + √⟨x, x⟩
+
+Mostrar que es una norma en E.
+
+Definición: En un espacio (E, ⟨,⟩) dos vectores  
+x y y son ortogonales ⇔ ⟨x,y⟩ = 0  
+
+Nota: En ℝⁿ definimos, para x = (x₁, ..., xₙ), y = (y₁, ..., yₙ)  
+⟨x, y⟩ = x₁y₁ + ... + xₙyₙ.  
+
+Mostrar que ⟨,⟩ es un producto interno en ℝⁿ.  
+
+Si x ⊥ y (ortogonal), entonces  
+||x+y||² = ||x||² + ||y||²  
+(Teorema de Pitágoras).
+
+||x+y||² = |+√⟨x+y,x+y⟩|² = ⟨x+y,x+y⟩ = ⟨x+y,x+y⟩
+
+= ⟨x,x+y⟩ + ⟨y,x+y⟩
+
+= ⟨x,x+y⟩ + ⟨y,x+y⟩
+
+= ⟨x,x⟩ + ⟨x,y⟩ + ⟨y,x⟩ + ⟨y,y⟩
+
+= ⟨x,x⟩ + ⟨y,y⟩
+
+= ||x||² + ||y||²
+
+---
+
+Teorema (desigualdad de Cauchy-Schwarz)
+
+En un espacio vectorial E con producto interno ⟨,⟩ se tiene:
+
+|⟨x,y⟩| ≤ ||x||·||y|| ∀ x,y ∈ E
+
+d/: Si x=0 ⇒ ⟨x,y⟩ = 0
+
+||x|| = ||0|| = 0
+
+|⟨x,y⟩| = |0| = 0
+
+||x||·||y|| = 0·||y|| = 0 ⇒ |⟨x,y⟩| = ||x||·||y||
+
+Si x ≠ 0, sea λ = ⟨x,y⟩/||x||²
+
+Consideremos el vector
+
+z = y - λx
+
+⟨x, z⟩ = ⟨x, y - λx⟩
+
+= ⟨x, y⟩ + ⟨x, -λx⟩
+
+= ⟨x, y⟩ - λ⟨x, x⟩
+
+= ⟨x, y⟩ - ⟨x,y⟩/||x||²·||x||²
+
+= 0
+
+y = z + λx
+
+⟨y, y⟩ = ⟨z + λx, z + λx⟩ = ⟨z + λx, z + λx⟩
+
+= ⟨z, z + λx⟩ + ⟨λx, z + λx⟩
+
+= ⟨z, z + λx⟩ + λ⟨x, z + λx⟩
+
+= ⟨z, z + λx⟩ + λ⟨x, z + λx⟩
+
+= ⟨z, z⟩ + ⟨z, λx⟩ + λ⟨x, z⟩ + λ⟨x, λx⟩
+
+= ⟨z, z⟩ + λ⟨z, x⟩ + λ⟨x, z⟩ + λ²⟨x, x⟩
+
+= ⟨z, z⟩ + λ²⟨x, x⟩
+
+||y||² = ||z||² + λ²||x||²
+
+λ²·||x||² ≤ ||y||²
+
+⟨x, y⟩²/||x||⁴ ≤ ||x||² ≤ ||y||²
+
+⟨x, y⟩² ≤ ||x||²·||y||²
+
+|⟨x, y⟩| ≤ ||x||·||y||
+
+05/08/2025
+
+En ℝⁿ, la aplicación || ||: E → ℝ  
+x ↦ +√(x₁² + ... + xₙ²)
+
+es una norma, donde x = (x₁, ..., xₙ)
+
+1) ||x|| > 0, ∀ x ∈ ℝⁿ
+2) ||x|| = 0 entonces √(x₁² + ... + xₙ²) = (0, ..., 0)
+
+entonces x₁² + ... + xₙ² = 0
+
+y así x₁² = 0, ..., xₙ² = 0
+
+Luego, xₙ = 0, ..., x₁ = 0 es decir
+
+x = (x₁, ..., xₙ) = (0, ..., 0) = 0⃗
+
+Si x = 0⃗, entonces x = (0, 0, ..., 0) y
+
+||x|| = √(x₁² + ... + xₙ²) = √(0² + ... + 0²) = 0
+
+3) ||λx|| = ||λ(x₁, ..., xₙ)||
+
+= ||(λx₁, ..., λxₙ)||
+
+= √((λx₁)² + ... + (λxₙ)²)
+
+= √(λ²(x₁² + ... + xₙ²))
+
+= √(λ²)√(x₁² + ... + xₙ²)
+
+= |λ|·||x||
+
+4) ||x+y|| ≤ ||x|| + ||y||
+
+En ℝⁿ, si x = (x₁, ..., xₙ) y = (y₁, ..., yₙ)
+
+x·y = x₁y₁ + ... + xₙyₙ
+
+= ∑_{j=1}ⁿ x_j y_j
+
+La aplicación ⟨x,y⟩ = ∑ x_j y_j definida en ℝⁿ es un producto interno en ℝⁿ (ejercicio). Por tanto, vale la D.C.S.
+
+∀ x,y ∈ ℝⁿ: |x·y| ≤ ||x||·||y|| (||x|| = +√(x·x))
+
+||x+y||² = (x+y)·(x+y)
+
+= (x·(x+y)) + (y·(x+y))
+
+= (x·x + x·y) + (y·x + y·y)
+
+= (x·x) + (x·y) + (y·x) + (y·y)
+
+= ||x||² + 2(x·y) + ||y||²
+
+≤ ||x||² + 2(|x·y|) + ||y||²
+≤ ||x||² + 2||x||·||y|| + ||y||² (D.C.S)
+
+= (||x|| + ||y||)²
+
+⇒ √(||x+y||²) ≤ √((||x|| + ||y||)²)
+
+||x+y|| ≤ ||x|| + ||y||
+
+---
+
+Teorema: Sean || ||₁ y || ||₂ dos normas cualesquiera en ℝⁿ. Existen α, β > 0 en ℝ t.q. α||x||₁ ≤ ||x||₂ ≤ β||x||₁
+
+∀ x ∈ ℝⁿ
+
+es decir, en ℝⁿ dos normas cualesquiera son equivalentes.
+
+Nociones topológicas en espacios métricos.
+
+---
+
+Sea (M,d) espacio métrico y a ∈ M
+
+Llamamos "bola abierta con centro en a y radio r>0", al conjunto B(a; r)
+
+B(a; r) = {x ∈ M | d(x,a) < r}
+
+Llamamos "bola cerrada con centro en a y radio r>0", al conjunto B[a; r]
+
+B[a; r] = {x ∈ M | d(a,x) ≤ r}
+
+La esfera con centro en a y radio r, es el conjunto  
+S(a;r) = {x ∈ M | d(a,x) = r}
+
+Ejercicio: En ℝ² consideremos:  
+d(x,y) = |x₁ - x₂| + |y₁ - y₂| donde  
+x = (x₁, y₁), y = (x₂, y₂)
+
+Hallar B(0,0); 1, B[0,0]; 1)
+
+|x₁ - x₂| + |y₁ - y₂| < 1
+
+Definición: Sea (M,d) espacio métrico y A ⊆ M, un punto de M es "punto interior" de A si existe un radio r>0 tal que  
+B(a;r) ⊆ A.
+
+Definición: a es "punto frontera" de A si para todo r>0  
+B(a;r) ∩ A ≠ ∅ ∧ B(a;r) ∩ (M-A) ≠ ∅
+
+Definición: a es "punto exterior" de A si existe r>0 tal que  
+B(a;r) ⊆ (M-A)
+
+El interior de A es el conjunto A° formado por los puntos interiores de A:
+
+A° = {a ∈ M | a es punto interior de A}
+
+Nota: si a ∈ A°, entonces a ∈ A, es decir
+
+A° ⊆ A
+
+El exterior de A está formado por los puntos exteriores de A:
+
+Ext(A) = {a ∈ M | a es punto exterior de A}
+
+Fr(A) = {a ∈ M | a es punto frontera de A}
+
+Definición: Un conjunto A es abierto ⇔ A = A° es decir, A es abierto si A ⊆ A°
+
+Definición: F ⊆ M es cerrado si M-F es abierto es decir, F es cerrado si M-F ⊆ (M-F)° (por anterior).
+
+A = (a,b) a < b
+
+= {x ∈ R | a < x < b}
+
+Para todo x ∈ (a,b) existe r > 0 tal que B(x;r) ⊆ A
+
+r = min{|x-a|, |x-b|} B(x;r) ⊆ (a,b)
+
+(x-r, x+r) ⊆ (a,b)
+
+si y ∈ (x-r, x+r) entonces y ∈ (a,b)
+
+es decir si |y-x| < r ⇒ |y-(a+b)/2| < (b-a)/2
+
+1) Como A y B son conjuntos acotados  
+x ≤ α y y ≤ β  
+(1) siendo α = sup(A) y β = sup(B)  
+
+Tomando (1)  
+x + y ≤ α + β  
+(2)  
+
+Y de (2) podemos observar que A + B es acotado superiormente.  
+
+Ahora como estamos en un cuerpo ordenado y completo existe sup(A + B) la cual es la mínima cota superior. Así,  
+sup(A + B) ≥ α + β
+
+Ahora como α es sup(A) y β es sup(B) para cualquier ε > 0 existen  
+x > α - ε/2 y y > β - ε/2  
+(3)  
+
+Utilizando (3)  
+x + y > α + β - ε
+
+Y así α + β es la mínima cota superior de A + B  
+- inf(A) = a y inf(B) = b  
+- x > a y y > b  
+- x + y > a + b
+
+Sea b es cota inferior sea inf(A+B)
+
+Inf (A)    Inf (B)
+x < a + ε/2 y y < b + ε/2
+
+x + y < a + b + ε
+
+y así  inf(A+B) = inf(A) + inf(B)
+
+2) Si k>0: sup(A) = α
+
+⇒ x < α, kx < kα pues k>0 por lo tanto kA es acotado
+
+Ahora como α es supremo entonces
+
+x > α - ε/k para algún x y para todo ε
+
+k(x) > k(α - ε/k) ⇒ kx > kα - ε
+
+Inf(A) = β
+⇒ x > β, kx > kβ
+x < β + ε/k
+kx < kβ + ε y así inf(kA) = kβ
+
+A = [a, b] es cerrado  
+IR - A = (-∞, a) ∪ (b, +∞) es abierto  
+
+Si x=a sea r=a-x y así (x-r, x+r) ⊆ (-∞, a)  
+Si x>b sea r=x-b y (x-r, x+r) ⊆ (b, ∞)  
+
+13/05/2025  
+
+Proposición: Sea (M,d) espacio métrico y r>0 para p∈M, B(p;r) es un conjunto abierto  
+
+dll:  
+
+a ∈ B(p;r)
+r¹ = r - d(a, p)
+
+Tenemos que B(a; r¹) ⊆ B(p; r)  
+
+z ∈ B(a; r¹)
+d(z, p) < r = r¹ + d(a, p)
+
+Si z ∈ B(a; r¹) entonces d(a, z) < r¹  
+
+Tenemos:  
+d(z, p) ≤ d(z, a) + d(a, p) < r¹ + d(a, p) = r
+
+es decir z ∈ B(p;r)
+
+Proposición: En todo espacio métrico, B[p;r] es un conjunto cerrado
+
+dll: (Tome el complemento (abierto))
+
+Dado a ∈ M - B[p;r], debo ver que existe r > 0  
+tal que B(a;r¹) ⊆ M - B[p;r]
+
+r¹ = d(p, a) - r
+
+Completar.
+
+Teorema. Sea (M,d) espacio métrico
+
+a) φ y M son abiertos  
+b) Si A y B son abiertos en M, entonces A ∩ B es abierto  
+
+c) Si B es una colección de conjuntos abiertos en M, entonces ∪A es un conjunto abierto  
+A ∈ B
+
+d|a) Sea p ∈ φ. ¿Existe r>0 tal que B(p;r) ⊆ φ?  
+Se cumple por vacío  
+
+Sea ahora p ∈ M. Como  
+B(p;r) = {x ∈ M: d(p,x) < r} ⊆ M es decir  
+p ∈ M° y así M es abierto  
+
+b) Sea p ∈ A∩B. Entonces p ∈ A ∧ p ∈ B  
+∃ r₁, r₂ > 0 tal que  
+B(p;r₁) ⊆ A ∧ B(p;r₂) ⊆ B  
+
+r = min{r₁, r₂} Entonces B(p;r) ⊆ A ∩ B  
+
+c) Sea p ∈ ∪A. Existe A* ∈ B tal que p ∈ A*  
+Como A* es abierto existe r>0 tal que  
+B(p;r) ⊆ A* ⊆ ∪A  
+A ∈ B □
+
+Teorema: Sea (M,d) espacio métrico y A ⊆ M
+
+Sea θ = {x ∈ M | x es abierto y x ⊆ A}
+
+Entonces A° = ∪ x
+x ∈ θ
+
+dll: Si p ∈ A°, existe r>0 tal que  
+B(p;r) ⊆ A  
+
+Pero, B(p;r) ∈ θ y así p ∈ ∪ x
+x ∈ θ
+
+⇐ Si p ∈ ∪ x. Existe A*, donde A* es abierto tal que p ∈ A*
+x ∈ θ
+
+A* es abierto y además A* ⊆ A por definición
+
+Existe r>0 tal que B(p;r) ⊆ A* y así  
+p ∈ B(p;r) ⊆ A ⇒ p ∈ A°  
+
+Corolario: Sea (M,d) espacio métrico y A ⊆ M  
+
+a) A° es un conjunto abierto  
+
+b) Si Y es un conjunto abierto y Y ⊆ A, entonces Y ⊆ A°  
+
+Nota: a) y b) nos dice que A° es el conjunto abierto más grande que está contenido en A.
+
+dll: a) A° es unión de abiertos, y así A° es un conjunto abierto
+
+b) Sea Y abierto y Y ⊆ A. Sea p ∈ Y existe  
+r>0 tal que B(p;r) ⊆ Y, entonces p ∈ B(p;r) ⊆ A ⇒ p ∈ A°.
+
+Teorema: Sea (M,d) espacio métrico.  
+
+a) φ y M son cerrados  
+b) Si F es una familia de cerrados en M, entonces  
+∩ F es un conjunto cerrado  
+F ∈ F
+c) Si F₁ y F₂ son cerrados entonces F₁ ∪ F₂ es cerrado  
+
+dll:  
+a) M - φ = M es abierto ⇒ φ es cerrado  
+M - M = φ es abierto ⇒ M es cerrado  
+
+b) M - ∩ F = ∪ (M - F) por leyes de De Morgan  
+F ∈ F F ∈ F
+⇒ ∩ F es cerrado  
+F ∈ F
+por leyes de De Morgan unión de abiertos es abierto  
+
+c) M - (F₁ ∪ F₂) = (M - F₁) ∩ (M - F₂)  
+abierto abierto
+
+F₁ ∪ F₂ es cerrado
+
+Ejercicio a) Sea A₁, ..., Aₙ abiertos en (M,d)
+
+Entonces A₁ ∩ ... ∩ Aₙ es abierto
+
+b) Si F₁, ..., Fₙ son cerrados en (M,d) entonces
+
+F₁ ∪ ... ∪ Fₙ es un conjunto cerrado
+
+Ej: Sean Aₙ = (-1/n, 1/n), n ∈ N y θ = {Aₙ: n ∈ N}
+
+Entonces  
+∩ Aₙ = {0}
+n ∈ N
+no es abierto
+
+Por tanto si ∩ Aₙ no es finito entonces no es abierto.
+n ∈ N
+
+Como 0 ∈ Aₙ ∀ n ∈ N entonces 0 ∈ ∩ Aₙ ⇒ {0} ⊆ ∩ Aₙ
+n ∈ N n ∈ N
+
+Ahora ∩ Aₙ ⊆ {0}
+n ∈ N
+
+Si existiera p ∈ ∩ Aₙ con p ≠ 0. Entonces p ≠ 0
+n ∈ N
+
+Sea p ≠ 0 por la propiedad arquimediana de los reales existe
+
+N ∈ N tal que 0 < 1/N < |p|
+
+Ejercicio: Mostrar una familia arbitraria de conjuntos
+cerrados, tal que la unión de dicha familia
+no sea cerrada. (En IR)
+
+Definición: Sea M,d espacio métrico y A ⊆ M
+
+Un punto p ∈ M es "punto límite de A" si
+para todo r>0
+
+(B(p;r)-{p})∩A ≠ φ
+
+El conjunto de los puntos de acumulación de A,
+es el derivado de A, A'.
+
+p ∈ A' ⇔ (∀ r>0)((B(p;r)-{p})∩A ≠ φ)
+
+Teorema: Sea (M,d) espacio métrico y A ⊆ M
+
+p ∈ A' ⇔ toda bola con centro en p contiene
+infinitos puntos de A.
+
+dll: ⇒ Si p ∈ A', sea r>0 existe x₁ ≠ p, x₁ ∈ A
+
+tal que x₁ ∈ B(p;r). Existe x₂ ≠ p x₂ ∈ A tal que
+
+x₂ ∈ B(p; ½ d(p,x₁)). Existe x₃ ≠ p, x₃ ∈ A
+
+tal que x₃ ∈ B(p; ½ d(p,x₂)). ...
+
+Por construcción, xᵢ ≠ xⱼ para i ≠ j y xₙ → p
+
+Por tanto, en B(p;r) hay infinitos puntos de A.
+
+⇐ Si para r > 0, en B(p;r) hay infinitos puntos de A, entonces
+
+(B(p;r) - {p}) ∩ A ≠ φ
+
+Definición: Sea (M,d) espacio métrico y A ⊆ M. La clausura de A, es el conjunto A dado con:
+
+A = A ∪ A'
+
+⇒ A ⊆ A, A' ⊆ A
+
+Proposición: Sea (M,d) espacio métrico y A ⊆ M
+
+p ∈ A ⇔ (∀ r > 0)(B(p;r) ∩ A ≠ φ)
+
+⇒ p ∈ A ⇒ p ∈ A ∪ A' ⇒ p ∈ A o p ∈ A'
+
+Si p ∈ A cualquier B(p;r) ∩ A ≠ φ pues p ∈ A.
+
+Si p ∈ A' entonces (B(p;r) - {p}) ∩ A ≠ φ por definición. Pero (B(p;r) - {p}) ⊆ B(p;r)
+
+(B(p;r) - {p}) ∩ A ⊆ B(p;r) ∩ A ⇒ B(p;r) ∩ A ≠ φ
+
+⇐ Si (∀ r > 0) B(p;r) ∩ A ≠ φ ⇒ p ∈ A ⇒ p ∈ A
+
+Teorema: Sea (M,d) espacio métrico y F ⊆ M  
+F es cerrado ⇔ F = F
+
+dll: Supongamos que F es cerrado y que  
+F ≠ F
+
+Como F es cerrado M-F es abierto y existe p ∈ F tal que p ∉ F. Entonces p ∈ M-F y existe  
+r*>0 tal que B(p;r*) ⊆ M-F
+
+Luego, B(p;r*) ∩ F = φ (→←)  
+
+p ∈ F ⇒ (∀ r>0)(B(p;r) ∩ A ≠ φ).  
+
+Por tanto si F es cerrado entonces F = F
+
+Recíprocamente supongamos que F = F y que F no es cerrado.  
+
+Si F no es cerrado, entonces M-F no es abierto.  
+Existe p ∈ M-F tal que p ∉ (M-F)°. Para todo r>0  
+B(p;r) ≠ M-F. Por tanto  
+
+∀ r>0, B(p;r) ∩ F ≠ φ  
+Así, p ∈ F y entonces p ∈ F (porque F = F  
+→←)
+
+Taller parcial  
+1. Veamos que a·0 = 0  
+
+a·0 = a(0 + 0) = a·0 + a·0  
+
+Restando a·0 a ambos lados  
+
+a·0 + a·0 - a·0 = a·0 - a·0
+
+a·0 = 0
+
+2. (-1)·a = -a
+
+a + (-1)a = 
+
+1·a + (-1)a = (1 + (-1))a =
+
+0·a = 0 por el anterior
+
+Si a + (-1)a = 0 entonces (-1)a es el inverso aditivo de a y como este es único -a = (-1)a.
+
+3. -(-a) = a
+
+-(-a) = (-1)(-a) = (-1)(-1)(a)
+
+⇒ -(-a) = (-1·-1)(a) asociativa
+
+⇒ -(-a) = 1(a) = a
+
+4. Si a ≠ 0 entonces 1/a ≠ 0
+
+Como a ≠ 0 entonces a tiene inverso multiplicativo
+
+1/a
+
+Ahora supongamos a ≠ 0 y 1/a = 0
+
+Multiplicando a ambos lados por a
+
+a(1/a) = a*0 ⇒ 1 = 0 (→←)
+
+5. Si a*b = 0, entonces a = 0 o b = 0
+
+Si a*b = 0 y a ≠ 0 y b ≠ 0
+
+Como a ≠ 0, existe 1/a
+
+a*b = 0 ⇒ (1/a)(a*b) = (1/a)*0 = ((1/a)a)*b = 0
+
+⇒ 1*b = 0 ⇒ b = 0 (→←)
+
+6. Si a > b, entonces a+c > b+c
+
+Si a > b, restando b en ambos lados
+
+a - b > 0, sumamos c
+
+(a-b)+c > 0+c ⇒ (a-b)+c = (a+c) - b > c ⇒ (a+c) - b - c
+
+⇒ (a+c) - (b+c) > 0 ⇒ (a+c) > (b+c)
+
+7. Si a ≠ 0 entonces a² > 0
+
+Si a ≠ 0 entonces a > 0 o a < 0
+
+Si a > 0 a² = a·a > a·0 = 0 ⇒ a² > 0
+
+Si a < 0 entonces -a > 0 (def negativo)
+
+a² = a·a = (-1)(-1)a·a = (-1)a(-1)a = (-a)(-a)
+
+y -a > 0
+
+8. Si a > b y c > 0 entonces, ac > bc
+
+Como a > b ⇒ a-b > 0 ⇒ (a-b)c > c·0 ⇒ (a-b)c > 0 ⇒ ac - bc > 0 ⇒ ac - bc + bc > bc ⇒ ac > bc.
+
+9. Si a > 0, entonces 1/a > 0 y si a < 0, entonces 1/a < 0
+
+Supongamos a > 0 y 1/a < 0
+
+Como a ≠ 0 1/a ≠ 0
+
+a·1/a > 0·1/a ⇒ a·1/a > 0 pero como a > 0 y 1/a < 0 entonces a·1/a < 0 (→←)
+
+∀ a,b ∈ ℝ: ab ≤ ½(a² + b²)
+
+(a - b)² ≥ 0 por anterior
+
+⇒ (a² - 2ab + b²) ≥ 0
+
+⇒ a² + b² ≥ 2ab ⇒ ½(a² + b²) ≥ ab
+
+10. Si 0 ≤ y ≤ 1 pruebe existe un único real tal que x² = y
+
+Sea f(x) = x² f(0) = 0 f(1) = 1 f(0) < y ≤ f(1)
+
+por el teorema del valor intermedio f(x) = x² = y
+
+Unicidad
+
+f(x) = x² es estrictamente creciente x ≥ 0 si x₁ ≠ x₂
+
+con x₁, x₂ > 0 entonces
+
+x₁ < x₂ ⇒ x₁² < x₂²
+
+Lo que implica que no hay dos valores de x diferentes cuyas imágenes sean iguales.
+
+11. Existe un real positivo tal que x² = 2
+
+S = {x ∈ ℝ | x > 0 y x² ≤ 2} ≠ φ
+
+Es acotado superiormente por ejemplo por 2.
+
+b = sup(S) ⇒ Demostrar
+
+Caso 1: b² < 2 ⇒ 2 - b² > 0
+
+En ℤ⁺  
+n > (2b+1)/(2-b²) ⇔ 2 - b² > (2b+1)/n
+
+(b + 1/n)² = b² + (2/n)b + 1/n² < b² + (2/n)b + 1/n
+
+1 < n ⇒ n² > n ⇒ 1/n² < 1/n
+= b² + ((2b+1)/n) < b² + (2-b²) = 2
+
+⇒ (b+1/n)² < 2
+
+entonces b + 1/n ∈ S por tanto b ≠ sup(S) (→←)
+
+Caso 2: b² > 2 ⇒ b² - 2 > 0
+
+En ℤ⁺  
+n > 2b/(b²-2) ⇔ b² - 2 > 2b/n ⇒ -(b²-2) < -2b/n ⇒ b² - (b²-2) > b² - 2b/n
+
+(b - 1/n)² = b² - 2b/n + 1/n² > b² - 2b/n > b² - (b²-2) = 2
+
+(b - 1/n) ∉ S por lo anterior
+
+pero b ∈ sup y b - 1/n < b
+
+Caso 3: b² = 2 por tricotomía.
+
+b² < 2 ⇔ 2 - b² > 0
+
+∃ n ∈ ℕ tal que n > (2b+1)/(2-b²)
+
+(b+1/n)² = b² + (2b)/n + 1/n² < b² + (2b)/n + 1/n (pues 1/n² < 1/n)
+
+= b² + ((2b+1)/n) < b² + 2 - b² = 2
+
+(b+1/n)² < 2 ∈ S (→←)
+
+b² > 2 ⇒ b² - 2 > 0
+
+∃ n ∈ ℕ tal que n > 2b/(b²-2) ⇒ b²-2 > 2b/n *
+
+(b-1/n)² = b² - 2b/n + 1/n² > b² - 2b/n > b² - (b²-2) = 2
+
+(b-1/n)² > 2 pero (b-1/n)² < b² (→←)
+
+⇔ no es supremo
+
+05/10/2025
+
+Teorema: Sea (M,d) espacio métrico, F subconjunto de M y A cerrado tal que F ⊆ A. Entonces F ⊆ A
+
+dll: Supongamos que existe A cerrado tal que F ⊆ A pero F ⊈ A
+
+Existe p ∈ F tal que p ∉ A. Tenemos que p ∈ M-A abierto
+
+Existe r>0 tal que B(p;r) ⊆ M-A (a) →←
+
+Como p ∈ F, entonces B(p;r) ∩ A ≠ φ (b)
+
+Corolario: Sea (M,d) em, F ⊆ M y F = ∩{A ⊆ M | A es cerrado y F ⊆ A} ≠ φ pues M es cerrado y F ⊆ M
+
+Entonces F = ∩ A
+A ∈ F
+
+Se tiene del A ∈ F corolario si A* es cerrado y A ⊆ A*, es decir, F ⊆ A*
+
+F es el conjunto cerrado más pequeño que contiene a F F ⊆ F
+
+que F es cerrado. Además, F ⊆ A* entonces como
+
+Sucesiones en espacios métricos
+
+Sea (M,d) em. Una sucesión en M es una función f: N → M
+
+Es usual escribir la sucesión f: N → M como (fₙ)
+
+Def: Dada una sucesión f: N → M, en un em.  
+Se dice que (fₙ) converge a un punto p ∈ M si existe N ∈ N tal que n ≥ N implica fₙ ∈ B(p;r) dado ε > 0
+
+Esto significa que (d(fₙ, p) < ε) a partir de N
+
+Si (fₙ) converge a p, escribimos fₙ → p
+
+Teorema (Unicidad del límite): Si (fₙ) converge a p y p*, entonces p = p*
+
+dll: Supongamos que fₙ → p y fₙ → p* y p ≠ p*
+
+Sea ε = ½ d(p, p*)
+
+Como fₙ → p, existe N₁ ∈ N tal que n ≥ N₁ implica d(fₙ, p) < ½ d(p, p*)
+
+Como fₙ → p*, existe N₂ ∈ N tal que n ≥ N₂ implica d(fₙ, p*) < ½ d(p, p*)
+
+N = max{N₁, N₂}
+
+d(p, p*) ≤ d(p, fₙ) + d(fₙ, p*)
+
+≤ ½ d(p, p*) + ½ d(p, p*)
+
+= d(p, p*) (→←)
+
+Def: (fₙ) es acotada si existe r>0 tal que fₙ ∈ B(p;r), ∀ n ∈ N
+
+Teorema: Sea (fₙ) convergente entonces (fₙ) es acotada
+
+dll: Sea p ∈ M tal que fₙ → p. Para ε=1
+
+Existe N ∈ N tal que n ≥ N implica fₙ ∈ B(p;1)
+
+Sea r = max{1, d(p,f₁), d(p,f₂), ..., d(p,f_N)}
+
+Consideramos B(p;r+1). Tenemos que fₙ ∈ B(p;r+1) ∀ n ∈ N
+es decir, (fₙ) es acotada.
+
+Convergente ⇒ acotada
+
+y No acotada ⇒ No convergente.
+
+Corolario Anterior
+
+Por el teorema anterior F ⊆ A si A es cerrado y si F ⊆ A entonces
+
+F ⊆ ∩ A ⇒ F ⊆ A por definición entonces F ⊆ A
+A ∈ F
+y ∩ A es cerrado pues es intersección
+A ∈ F
+finita de cerrados
+
+x ∈ ∩ A ⇒ x ∈ F pues F es cerrado y F ⊆ F
+A ∈ F
+
+05/22/2025
+
+Def: Una sucesión (Sₙ) en IR es monótona creciente si n ∈ N implican Sₙ ≤ Sₙ₊₁ y es monótona decreciente si n ∈ N implica Sₙ ≥ Sₙ₊₁.
+
+Teorema: En IR (en la métrica usual), toda sucesión monótona creciente y acotada superiormente es convergente.
+
+dll: Sea (Sₙ) una sucesión creciente y A = {Sₙ : n ∈ IN}
+
+Existe L ∈ IR tal que Sₙ ≤ L ∀ n ∈ IN
+
+Sea b = Sup A pues estamos en IR
+Veamos que Sₙ → b
+
+Dado ε>0 existe b - ε < S_N que pertenece a A
+
+Si n > N, Sₙ > S_N y así
+
+b - ε < S_N < Sₙ < b < b + ε
+
+Hemos demostrado que n > N implica b - ε < Sₙ < b + ε
+lo que implica
+
+Sₙ ∈ (b - ε, b + ε) Luego Sₙ → b
+
+Teorema: En IR, toda sucesión monótona decreciente y acotada inferiormente, es convergente.
+
+Desarrollar
+
+Def: Sea f: IN → M una sucesión en un espacio métrico (M,d). Una subsucesión de f, es una función f|_N': IN' → M n ↦ f(n) = fₙ
+
+IN' = {n₁, n₂, ..., n_k, ...}  
+n₁ < n₂ < ... < n_k < ...
+
+Se suele representar la subsucesión dada como (fₙₖ).
+
+Teorema: Sea (fₙ) sucesión en IR tal
