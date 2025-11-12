@@ -19,6 +19,12 @@ class Settings:
     CHUNK_OVERLAP = 150
     RETRIEVER_K = 4
 
+    # Embedding Configuration
+    EMBEDDING_BATCH_SIZE = 10  # Process embeddings in small batches to avoid timeouts
+    EMBEDDING_REQUEST_TIMEOUT = 60  # Timeout in seconds for embedding requests
+    EMBEDDING_MAX_RETRIES = 3  # Maximum number of retries for failed batches
+    EMBEDDING_RETRY_DELAY = 2  # Initial delay between retries (will use exponential backoff)
+
     # Agent Configuration
     AGENT_MAX_ITERATIONS = 3
     AGENT_VERBOSE = True

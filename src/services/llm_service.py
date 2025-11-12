@@ -48,7 +48,7 @@ class LLMService:
     @st.cache_resource(show_spinner="Loading embeddings model...")
     def load_embeddings() -> Optional[GoogleGenerativeAIEmbeddings]:
         """
-        Load Google embeddings model.
+        Load Google embeddings model with timeout configuration.
 
         Returns:
             Initialized embeddings model or None if loading fails
@@ -59,7 +59,8 @@ class LLMService:
 
         try:
             return GoogleGenerativeAIEmbeddings(
-                model=Settings.EMBEDDINGS_MODEL_NAME
+                model=Settings.EMBEDDINGS_MODEL_NAME,
+                request_options={"timeout": Settings.EMBEDDING_REQUEST_TIMEOUT}
             )
         except Exception as e:
             st.error(f"❌ Error loading embeddings: {e}")

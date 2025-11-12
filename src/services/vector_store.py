@@ -1,10 +1,12 @@
 """Vector store service for managing ChromaDB operations."""
 
 import os
+import time
 import streamlit as st
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from langchain_community.vectorstores import Chroma
 from langchain.schema.vectorstore import VectorStoreRetriever
+from langchain.schema import Document
 
 from ..config.settings import Settings
 from .llm_service import LLMService
@@ -15,10 +17,105 @@ class VectorStoreService:
     """Service for managing vector databases and retrievers."""
 
     @staticmethod
+    def _create_chroma_in_batches(
+        split_docs: List[Document],
+        embeddings,
+        collection_name: str
+    ) -> Optional[Chroma]:
+        """
+        Create ChromaDB by processing documents in batches with retry logic.
+
+        Args:
+            split_docs: List of document chunks
+            embeddings: Embeddings model
+            collection_name: Name for the ChromaDB collection
+
+        Returns:
+            ChromaDB instance or None if creation fails
+        """
+        batch_size = Settings.EMBEDDING_BATCH_SIZE
+        max_retries = Settings.EMBEDDING_MAX_RETRIES
+        retry_delay = Settings.EMBEDDING_RETRY_DELAY
+
+        total_docs = len(split_docs)
+        chroma_db = None
+
+        # Create progress bar
+        progress_bar = st.progress(0)
+        status_text = st.empty()
+
+        try:
+            # Process documents in batches
+            for i in range(0, total_docs, batch_size):
+                batch = split_docs[i:i + batch_size]
+                batch_num = (i // batch_size) + 1
+                total_batches = (total_docs + batch_size - 1) // batch_size
+
+                status_text.text(f"Processing batch {batch_num}/{total_batches} ({len(batch)} documents)...")
+
+                # Retry logic for each batch
+                for attempt in range(max_retries):
+                    try:
+                        if chroma_db is None:
+                            # Create initial ChromaDB with first batch
+                            chroma_db = Chroma.from_documents(
+                                documents=batch,
+                                embedding=embeddings,
+                                collection_name=collection_name
+                            )
+                        else:
+                            # Add subsequent batches to existing ChromaDB
+                            chroma_db.add_documents(documents=batch)
+
+                        # Update progress
+                        progress = min((i + len(batch)) / total_docs, 1.0)
+                        progress_bar.progress(progress)
+                        break  # Success, exit retry loop
+
+                    except Exception as e:
+                        if "504" in str(e) or "deadline" in str(e).lower():
+                            if attempt < max_retries - 1:
+                                wait_time = retry_delay * (2 ** attempt)  # Exponential backoff
+                                status_text.warning(
+                                    f"⚠️ Timeout on batch {batch_num} (attempt {attempt + 1}/{max_retries}). "
+                                    f"Retrying in {wait_time}s..."
+                                )
+                                time.sleep(wait_time)
+                            else:
+                                status_text.error(
+                                    f"❌ Failed to process batch {batch_num} after {max_retries} attempts. "
+                                    f"Error: {e}"
+                                )
+                                raise
+                        else:
+                            # Non-timeout error, raise immediately
+                            raise
+
+                # Small delay between batches to avoid rate limiting
+                if i + batch_size < total_docs:
+                    time.sleep(0.5)
+
+            progress_bar.progress(1.0)
+            status_text.success(f"✅ Successfully processed {total_docs} documents in {total_batches} batches!")
+            time.sleep(1)  # Brief pause to show success message
+
+            # Clean up progress indicators
+            progress_bar.empty()
+            status_text.empty()
+
+            return chroma_db
+
+        except Exception as e:
+            progress_bar.empty()
+            status_text.empty()
+            st.error(f"❌ Error creating ChromaDB: {e}")
+            return None
+
+    @staticmethod
     @st.cache_resource(show_spinner="Creating vector database...")
     def create_chroma_db(file_path: str):
         """
-        Create ChromaDB instance from PDF file.
+        Create ChromaDB instance from PDF file using batch processing.
 
         Args:
             file_path: Path to PDF file
@@ -39,17 +136,12 @@ class VectorStoreService:
         # Create unique collection name based on filename
         collection_name = f"doc_{os.path.basename(file_path).replace('.', '_').replace(' ', '_')}"
 
-        try:
-            # Create ChromaDB with embeddings
-            chroma_db = Chroma.from_documents(
-                documents=split_docs,
-                embedding=embeddings,
-                collection_name=collection_name
-            )
-            return chroma_db
-        except Exception as e:
-            st.error(f"❌ Error creating ChromaDB: {e}")
-            return None
+        # Create ChromaDB using batch processing with retry logic
+        return VectorStoreService._create_chroma_in_batches(
+            split_docs=split_docs,
+            embeddings=embeddings,
+            collection_name=collection_name
+        )
 
     @staticmethod
     def create_retriever(
