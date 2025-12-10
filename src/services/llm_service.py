@@ -4,6 +4,7 @@ import streamlit as st
 from typing import Optional
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 from ..config.settings import Settings
 
@@ -18,7 +19,7 @@ class LLMService:
         Load the specified LLM model.
 
         Args:
-            model_name: Either "openai" or "google"
+            model_name: Either "openai", "google", or "ollama"
 
         Returns:
             Initialized LLM model or None if loading fails
@@ -30,6 +31,12 @@ class LLMService:
                     return None
                 return ChatOpenAI(
                     model_name=Settings.OPENAI_MODEL_NAME,
+                    temperature=Settings.LLM_TEMPERATURE
+                )
+            elif model_name == "ollama":
+                return ChatOllama(
+                    model=Settings.OLLAMA_MODEL_NAME,
+                    base_url=Settings.OLLAMA_BASE_URL,
                     temperature=Settings.LLM_TEMPERATURE
                 )
             else:  # google
@@ -46,22 +53,32 @@ class LLMService:
 
     @staticmethod
     @st.cache_resource(show_spinner="Loading embeddings model...")
-    def load_embeddings() -> Optional[GoogleGenerativeAIEmbeddings]:
+    def load_embeddings(use_ollama: bool = False):
         """
-        Load Google embeddings model with timeout configuration.
+        Load embeddings model (Google or Ollama).
+
+        Args:
+            use_ollama: If True, use Ollama embeddings. Otherwise use Google embeddings.
 
         Returns:
             Initialized embeddings model or None if loading fails
         """
-        if not Settings.get_google_api_key():
-            st.error("❌ Cannot load embeddings model. Missing GOOGLE_API_KEY.")
-            return None
-
         try:
-            return GoogleGenerativeAIEmbeddings(
-                model=Settings.EMBEDDINGS_MODEL_NAME,
-                request_options={"timeout": Settings.EMBEDDING_REQUEST_TIMEOUT}
-            )
+            if use_ollama:
+                # Usar embeddings de Ollama
+                return OllamaEmbeddings(
+                    model=Settings.OLLAMA_EMBEDDINGS_MODEL,
+                    base_url=Settings.OLLAMA_BASE_URL
+                )
+            else:
+                # Usar embeddings de Google
+                if not Settings.get_google_api_key():
+                    st.error("❌ Cannot load Google embeddings model. Missing GOOGLE_API_KEY.")
+                    return None
+                return GoogleGenerativeAIEmbeddings(
+                    model=Settings.EMBEDDINGS_MODEL_NAME,
+                    request_options={"timeout": Settings.EMBEDDING_REQUEST_TIMEOUT}
+                )
         except Exception as e:
             st.error(f"❌ Error loading embeddings: {e}")
             return None
@@ -75,6 +92,8 @@ class LLMService:
             List of available model names
         """
         available = []
+        # Ollama siempre está disponible si está corriendo localmente
+        available.append("ollama")
         if Settings.get_google_api_key():
             available.append("google")
         if Settings.get_openai_api_key():

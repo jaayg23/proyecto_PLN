@@ -11,7 +11,10 @@ class Settings:
     # LLM Model Configuration
     GOOGLE_MODEL_NAME = "gemini-2.5-flash"
     OPENAI_MODEL_NAME = "gpt-4o-mini"
+    OLLAMA_MODEL_NAME = "llama3.2"  # Cambia a tu modelo de Ollama (llama3.2, mistral, etc.)
+    OLLAMA_BASE_URL = "http://localhost:11434"  # URL de tu servidor Ollama
     EMBEDDINGS_MODEL_NAME = "models/text-embedding-004"
+    OLLAMA_EMBEDDINGS_MODEL = "nomic-embed-text"  # Modelo de embeddings de Ollama
     LLM_TEMPERATURE = 0.1
 
     # Document Processing Configuration
