@@ -34,7 +34,6 @@ class UIComponents:
             "🤖 AI Model:",
             available_models,
             index=available_models.index(default_model),
-            key="llm_model_name",
             help="Select the AI model to use for generating responses"
         )
 

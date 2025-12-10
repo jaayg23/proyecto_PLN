@@ -67,14 +67,36 @@ class ChatAssistantPage:
 
         with col2:
             available_models = LLMService.get_available_models()
-            model_name = UIComponents.render_model_selector(
+            selected_model = UIComponents.render_model_selector(
                 available_models=available_models,
-                default_model=st.session_state.get("llm_model_name", "google")
+                default_model=available_models[0] if available_models else "ollama"
             )
+            st.caption(f"Usando: **{selected_model}**")
 
-        # Load components
-        llm = LLMService.load_llm(st.session_state.llm_model_name)
+        # Load LLM directamente con el modelo seleccionado
+        llm = LLMService.load_llm(selected_model)
+        
+        if llm is None:
+            st.error(f"❌ No se pudo cargar el modelo: {selected_model}")
+            st.stop()
+        
+        # Validate LLM loaded successfully
+        if llm is None:
+            st.error("❌ Could not load the selected model. Please check:")
+            st.markdown("- For **Ollama**: Make sure Ollama is running (check system tray)")
+            st.markdown("- For **Google**: Check that GOOGLE_API_KEY is configured in secrets")
+            st.markdown("- For **OpenAI**: Check that OPENAI_API_KEY is configured in secrets")
+            st.stop()
+        
         retrievers = VectorStoreService.create_all_retrievers(notebooks)
+        
+        # Validate retrievers loaded successfully
+        if not retrievers:
+            st.error("❌ Could not load documents. Please check that:")
+            st.markdown("- PDF files exist in the configured paths")
+            st.markdown("- GOOGLE_API_KEY is configured for embeddings")
+            st.stop()
+        
         agent = AgentService.create_multi_rag_agent(llm, retrievers, notebooks)
 
         # Show available documents

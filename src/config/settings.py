@@ -10,14 +10,20 @@ class Settings:
 
     # LLM Model Configuration
     GOOGLE_MODEL_NAME = "gemini-2.5-flash"
+    GOOGLE_MAX_OUTPUT_TOKENS = 1536
     OPENAI_MODEL_NAME = "gpt-4o-mini"
+    OPENAI_MAX_TOKENS = 900
+    OLLAMA_MODEL_NAME = "llama3.2"  # Modelo llama3.2 (3B) - buen balance
+    OLLAMA_BASE_URL = "http://localhost:11434"  # URL de tu servidor Ollama
+    OLLAMA_CONTEXT_WINDOW = 4096
     EMBEDDINGS_MODEL_NAME = "models/text-embedding-004"
-    LLM_TEMPERATURE = 0.1
+    OLLAMA_EMBEDDINGS_MODEL = "nomic-embed-text"  # Modelo de embeddings de Ollama
+    LLM_TEMPERATURE = 0.6
 
     # Document Processing Configuration
     CHUNK_SIZE = 1000
     CHUNK_OVERLAP = 150
-    RETRIEVER_K = 4
+    RETRIEVER_K = 6
 
     # Embedding Configuration
     EMBEDDING_BATCH_SIZE = 10  # Process embeddings in small batches to avoid timeouts
@@ -26,8 +32,8 @@ class Settings:
     EMBEDDING_RETRY_DELAY = 2  # Initial delay between retries (will use exponential backoff)
 
     # Agent Configuration
-    AGENT_MAX_ITERATIONS = 3
-    AGENT_VERBOSE = True
+    AGENT_MAX_ITERATIONS = 8
+    AGENT_VERBOSE = False
 
     # UI Configuration
     PAGE_TITLE = "AI Study Assistant"
