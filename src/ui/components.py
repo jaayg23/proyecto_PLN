@@ -31,10 +31,11 @@ class UIComponents:
             default_model = available_models[0]
 
         selected_model = st.selectbox(
-            "Model:",
+            "🤖 AI Model:",
             available_models,
             index=available_models.index(default_model),
-            key="llm_model_name"
+            key="llm_model_name",
+            help="Select the AI model to use for generating responses"
         )
 
         return selected_model
@@ -57,10 +58,11 @@ class UIComponents:
         notebook_names = list(notebooks.keys())
 
         selected = st.selectbox(
-            "Select a document to view:",
+            "📚 Select a document to view:",
             notebook_names,
             index=default_index,
-            placeholder="Choose from available documents..."
+            placeholder="Choose from available documents...",
+            help="Select a document from your library to view its content"
         )
 
         return selected
@@ -77,11 +79,12 @@ class UIComponents:
         import base64
         import os
 
-        st.subheader(f"📄 {notebook_name}")
+        st.markdown(f"### 📄 {notebook_name}")
+        st.markdown("---")
 
         if not os.path.exists(local_path):
-            st.error(f"❌ PDF file not found: {local_path}")
-            st.markdown("**Note:** You can still query this document in the AI Chat Assistant if it was previously loaded.")
+            st.error(f"❌ PDF file not found: `{local_path}`")
+            st.info("💡 **Tip:** You can still query this document in the AI Chat Assistant if it was previously loaded.")
             return
 
         try:
@@ -99,15 +102,15 @@ class UIComponents:
                     width="100%"
                     height="800px"
                     type="application/pdf"
-                    style="border: 1px solid #ddd; border-radius: 4px;">
+                    style="border: none;">
                 </iframe>
             '''
 
             st.markdown(pdf_display, unsafe_allow_html=True)
 
         except Exception as e:
-            st.error(f"❌ Error loading PDF: {e}")
-            st.markdown("**Note:** You can still query this document in the AI Chat Assistant.")
+            st.error(f"❌ Error loading PDF: `{e}`")
+            st.info("💡 **Tip:** You can still query this document in the AI Chat Assistant.")
 
     @staticmethod
     def render_available_documents(retrievers: dict):
@@ -117,10 +120,12 @@ class UIComponents:
         Args:
             retrievers: Dictionary of retrievers (keys are notebook names)
         """
-        with st.expander("📚 Available documents for querying"):
+        with st.expander("📚 **Available Documents** — Click to view", expanded=False):
             if retrievers:
-                for notebook_name in retrievers.keys():
-                    st.markdown(f"• **{notebook_name}**")
+                st.markdown("The AI can search across these documents:")
+                st.markdown("")
+                for idx, notebook_name in enumerate(retrievers.keys(), 1):
+                    st.markdown(f"**{idx}.** 📖 {notebook_name}")
             else:
                 st.warning("⚠️ Could not load documents.")
 

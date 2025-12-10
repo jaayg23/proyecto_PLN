@@ -18,8 +18,9 @@ class DocumentViewerPage:
         Args:
             notebooks: Dictionary of notebook configurations
         """
-        st.header("📖 Document Viewer")
-        st.markdown("Select and view your PDF documents.")
+        st.markdown("## 📖 Document Viewer")
+        st.markdown("Browse through your PDF document library with ease.")
+        st.markdown("")
 
         # Notebook selector
         selected_notebook = UIComponents.render_notebook_selector(notebooks)
@@ -37,7 +38,7 @@ class DocumentViewerPage:
                 local_path=notebook_config.local_path
             )
         else:
-            UIComponents.show_info_message("Select a document from the dropdown menu to view it.")
+            st.info("👆 Select a document from the dropdown menu above to start viewing.")
 
 
 class ChatAssistantPage:
@@ -51,17 +52,18 @@ class ChatAssistantPage:
         Args:
             notebooks: Dictionary of notebook configurations
         """
-        st.header("🤖 AI Chat Assistant")
+        st.markdown("## 🤖 AI Chat Assistant")
         st.markdown(
-            "Ask questions about **any document**. "
-            "The assistant will automatically choose the most relevant document to answer from."
+            "Ask questions about **any topic** from your documents. "
+            "The AI will intelligently search and select the most relevant sources to provide accurate answers."
         )
+        st.markdown("")
 
         # Model selector in columns
-        col1, col2 = st.columns([3, 1])
+        col1, col2 = st.columns([2, 1])
 
         with col1:
-            st.info("💡 The agent can search across multiple documents and select the most relevant one.")
+            st.info("💡 **Smart Multi-Document Search** — The AI agent automatically finds and uses the most relevant documents to answer your questions.")
 
         with col2:
             available_models = LLMService.get_available_models()
@@ -77,16 +79,27 @@ class ChatAssistantPage:
 
         # Show available documents
         UIComponents.render_available_documents(retrievers)
+        
+        st.markdown("")
 
         # Chat container
         chat_container = st.container(height=600, border=True)
 
         # Render chat history
         with chat_container:
-            UIComponents.render_chat_history(st.session_state.messages)
+            if not st.session_state.messages:
+                st.markdown("""
+                <div class='welcome-message'>
+                    <h3>👋 Welcome to your AI Study Assistant!</h3>
+                    <p style='font-size: 1.1rem; margin-top: 1rem;'>Start by asking a question about your documents below.</p>
+                    <p style='margin-top: 0.5rem;'>💡 Example: "What are the main topics covered?"</p>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                UIComponents.render_chat_history(st.session_state.messages)
 
         # Handle user input
-        if prompt := st.chat_input("Ask about any topic from your documents..."):
+        if prompt := st.chat_input("💬 Ask me anything about your documents..."):
             # Add user message
             st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -96,7 +109,7 @@ class ChatAssistantPage:
             # Generate response
             with chat_container:
                 with st.chat_message("assistant"):
-                    with st.spinner("🔍 Analyzing your documents..."):
+                    with st.spinner("🔍 Searching through documents and generating response..."):
                         response = AgentService.run_agent(agent, prompt)
                         st.markdown(response)
 
