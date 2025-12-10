@@ -13,7 +13,6 @@ class LLMService:
     """Service for managing LLM models and embeddings."""
 
     @staticmethod
-    @st.cache_resource(show_spinner="Loading LLM model...")
     def load_llm(model_name: str):
         """
         Load the specified LLM model.
@@ -31,13 +30,15 @@ class LLMService:
                     return None
                 return ChatOpenAI(
                     model_name=Settings.OPENAI_MODEL_NAME,
-                    temperature=Settings.LLM_TEMPERATURE
+                    temperature=Settings.LLM_TEMPERATURE,
+                    max_tokens=Settings.OPENAI_MAX_TOKENS
                 )
             elif model_name == "ollama":
                 return ChatOllama(
                     model=Settings.OLLAMA_MODEL_NAME,
-                    base_url=Settings.OLLAMA_BASE_URL,
-                    temperature=Settings.LLM_TEMPERATURE
+                    base_url="http://127.0.0.1:11434",
+                    temperature=Settings.LLM_TEMPERATURE,
+                    num_ctx=Settings.OLLAMA_CONTEXT_WINDOW
                 )
             else:  # google
                 if not Settings.get_google_api_key():
@@ -45,7 +46,8 @@ class LLMService:
                     return None
                 return ChatGoogleGenerativeAI(
                     model=Settings.GOOGLE_MODEL_NAME,
-                    temperature=Settings.LLM_TEMPERATURE
+                    temperature=Settings.LLM_TEMPERATURE,
+                    max_output_tokens=Settings.GOOGLE_MAX_OUTPUT_TOKENS
                 )
         except Exception as e:
             st.error(f"❌ Error loading {model_name} model: {e}")

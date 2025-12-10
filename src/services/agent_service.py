@@ -59,7 +59,6 @@ class AgentService:
         )
 
     @staticmethod
-    @st.cache_resource(show_spinner="Initializing multi-RAG agent...")
     def create_multi_rag_agent(
         _llm,
         _retrievers: Dict[str, VectorStoreRetriever],
@@ -92,14 +91,24 @@ class AgentService:
                     )
                     tools.append(tool)
 
-            # Initialize agent with tools
+            # Initialize agent with tools - sin límites
             agent = initialize_agent(
                 tools=tools,
                 llm=_llm,
                 agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
                 verbose=Settings.AGENT_VERBOSE,
+                handle_parsing_errors=True,
+                return_intermediate_steps=False,
+                early_stopping_method="generate",
                 max_iterations=Settings.AGENT_MAX_ITERATIONS,
-                handle_parsing_errors=True
+                agent_kwargs={
+                    "system_message": (
+                        "You are a focused document analysis assistant. "
+                        "Always consult the provided tools to gather evidence from the user's documents "
+                        "before answering. Cite page numbers when possible and admit when the documents "
+                        "do not contain the requested information."
+                    )
+                }
             )
 
             return agent
